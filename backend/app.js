@@ -7,17 +7,16 @@ const createListing = require('./controllers/listingController').createListing;
 
 const app = express();
 
-// Enable CORS pre-flight
-app.options('*', cors());
-
 // CORS middleware
-app.use(cors({
-    origin: 'https://lafireshelter.org',
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
     methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-    optionsSuccessStatus: 200
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

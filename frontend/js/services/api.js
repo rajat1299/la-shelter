@@ -14,8 +14,7 @@ const api = {
             const response = await fetch(`${API_BASE_URL}/listings`, {
                 method: 'POST',
                 body: formData,
-                credentials: 'include',
-                mode: 'cors'
+                credentials: 'same-origin'
             });
             const data = await response.json();
             
