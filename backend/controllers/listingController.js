@@ -27,15 +27,17 @@ exports.getListings = async (req, res) => {
 
 exports.createListing = async (req, res) => {
     try {
-        logger.info('Creating new listing, body:', req.body);
-        logger.info('File:', req.file);
+        // Debug logging
+        console.log('Request body:', req.body);
+        console.log('Request file:', req.file);
+        console.log('Contact Methods:', typeof req.body.contactMethods);
 
         const { description, contactMethods } = req.body;
         const imageUrl = req.file ? req.file.filename : null;
 
         // Validate required fields
         if (!description || !imageUrl) {
-            logger.error('Missing required fields:', { description: !!description, imageUrl: !!imageUrl });
+            console.log('Missing fields:', { description: !!description, imageUrl: !!imageUrl });
             return res.status(400).json({ 
                 error: 'Description and image are required' 
             });
@@ -47,6 +49,7 @@ exports.createListing = async (req, res) => {
 
         // Validate contact methods
         if (!parsedContactMethods || Object.keys(parsedContactMethods).length === 0) {
+            console.log('Invalid contact methods:', parsedContactMethods);
             return res.status(400).json({ 
                 error: 'At least one contact method is required' 
             });
@@ -67,12 +70,13 @@ exports.createListing = async (req, res) => {
             success: true, 
             data: {
                 listing,
-                password // Return the password to the user
+                password
             }
         });
     } catch (error) {
+        console.error('Full error:', error);
         logger.error('Error creating listing:', error);
-        res.status(500).json({ error: 'Failed to create listing' });
+        res.status(500).json({ error: 'Failed to create listing', details: error.message });
     }
 };
 

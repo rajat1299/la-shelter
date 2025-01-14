@@ -4,6 +4,7 @@ const path = require('path');
 const axios = require('axios');
 const logger = require('./utils/logger');
 const createListing = require('./controllers/listingController').createListing;
+const upload = require('./middleware/upload');
 
 const app = express();
 
@@ -46,7 +47,7 @@ const verifyCaptcha = async (req, res, next) => {
 };
 
 // Apply to create listing route
-app.post('/api/listings', verifyCaptcha, createListing);
+app.post('/api/listings', verifyCaptcha, upload.single('image'), createListing);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
