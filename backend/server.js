@@ -61,6 +61,10 @@ const morganStream = {
             });
         });
 
+        server.on('error', (error) => {
+            console.error('Server error:', error);
+        });
+
     } catch (error) {
         logger.error('Failed to start server:', error);
         process.exit(1);

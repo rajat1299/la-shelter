@@ -5,17 +5,20 @@ const axios = require('axios');
 
 // ... other imports
 
-// Configure CORS
-const corsOptions = {
-    origin: [
-        'https://lafireshelter.org',
-        'http://localhost:8000',
-        'http://localhost:3000'
-    ],
-    optionsSuccessStatus: 200
-};
+// CORS middleware
+app.use(cors({
+    origin: function(origin, callback) {
+        const allowedOrigins = ['https://lafireshelter.org', 'http://localhost:8000', 'http://localhost:3000'];
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            return callback(new Error('CORS not allowed'));
+        }
+        return callback(null, true);
+    },
+    credentials: true
+}));
 
-app.use(cors(corsOptions));
 app.use(express.json());
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -43,5 +46,14 @@ const verifyCaptcha = async (req, res, next) => {
 
 // Apply to create listing route
 app.post('/api/listings', verifyCaptcha, createListing);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Error:', err.message);
+    res.status(500).json({ 
+        error: 'Internal server error',
+        details: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
 
 // ... rest of your app.js code 
