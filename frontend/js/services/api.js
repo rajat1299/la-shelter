@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://localhost:3000/api';
-const BACKEND_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://la-shelter-api.onrender.com/api';
+const BACKEND_URL = 'https://la-shelter-api.onrender.com';
 const RECAPTCHA_SITE_KEY = '6LebF7cqAAAAAHROwzDk3ng8KTndqIG2TDwdKotT';
 
 export { BACKEND_URL, api };
