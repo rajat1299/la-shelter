@@ -3,7 +3,9 @@ const logger = require('../utils/logger');
 
 const connectDB = async () => {
     console.log('Attempting to connect to MongoDB...');
-    console.log('MongoDB URI:', process.env.MONGO_URI.replace(/:[^:]*@/, ':****@')); // Hide password
+    // Hide password in logs
+    const sanitizedUri = process.env.MONGO_URI.replace(/:[^:]*@/, ':****@');
+    console.log('MongoDB URI:', sanitizedUri);
     try {
         const conn = await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
