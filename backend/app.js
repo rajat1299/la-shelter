@@ -3,16 +3,25 @@ const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
 const logger = require('./utils/logger');
+const createListing = require('./controllers/listingController').createListing;
 
-// ... other imports
+const app = express();
+
+// Enable CORS pre-flight
+app.options('*', cors());
 
 // CORS middleware
 app.use(cors({
     origin: 'https://lafireshelter.org',
-    credentials: true
+    methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -21,7 +30,6 @@ const verifyCaptcha = async (req, res, next) => {
     try {
         const token = req.body.recaptchaToken;
         if (!token) {
-            logger.error('No reCAPTCHA token provided');
             return res.status(400).json({ error: 'CAPTCHA verification failed' });
         }
 
@@ -29,15 +37,11 @@ const verifyCaptcha = async (req, res, next) => {
             `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
         );
 
-        logger.info('reCAPTCHA response:', response.data);
-
         if (!response.data.success || response.data.score < 0.5) {
-            logger.error('reCAPTCHA verification failed:', response.data);
             return res.status(400).json({ error: 'CAPTCHA verification failed' });
         }
         next();
     } catch (error) {
-        logger.error('reCAPTCHA error:', error);
         res.status(500).json({ error: 'CAPTCHA verification failed' });
     }
 };
@@ -55,4 +59,4 @@ app.use((err, req, res, next) => {
     });
 });
 
-// ... rest of your app.js code 
+module.exports = app; 
