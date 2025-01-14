@@ -29,7 +29,7 @@ const morganStream = {
         // Only start the server if DB connection is successful
         app.use(helmet());
         app.use(cors({
-            origin: 'http://localhost:8000', // Frontend URL
+            origin: 'https://lafireshelter.org', // Production URL only
             methods: ['GET', 'POST', 'DELETE'],
             allowedHeaders: ['Content-Type']
         }));

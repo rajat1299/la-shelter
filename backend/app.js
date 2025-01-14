@@ -7,15 +7,7 @@ const axios = require('axios');
 
 // CORS middleware
 app.use(cors({
-    origin: function(origin, callback) {
-        const allowedOrigins = ['https://lafireshelter.org', 'http://localhost:8000', 'http://localhost:3000'];
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            return callback(new Error('CORS not allowed'));
-        }
-        return callback(null, true);
-    },
+    origin: 'https://lafireshelter.org',
     credentials: true
 }));
 
