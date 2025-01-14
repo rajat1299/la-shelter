@@ -5,7 +5,17 @@ const axios = require('axios');
 
 // ... other imports
 
-app.use(cors());
+// Configure CORS
+const corsOptions = {
+    origin: [
+        'https://lafireshelter.org',
+        'http://localhost:8000',
+        'http://localhost:3000'
+    ],
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
