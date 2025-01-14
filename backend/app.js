@@ -3,10 +3,18 @@ const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
 const logger = require('./utils/logger');
+const mongoose = require('mongoose');
 const createListing = require('./controllers/listingController').createListing;
 const upload = require('./middleware/upload');
 
 const app = express();
+
+// Log MongoDB connection state
+app.use((req, res, next) => {
+    console.log('MongoDB Connection State:', mongoose.connection.readyState);
+    console.log('Request Path:', req.path);
+    next();
+});
 
 // CORS middleware
 const corsOptions = {
@@ -47,7 +55,11 @@ const verifyCaptcha = async (req, res, next) => {
 };
 
 // Apply to create listing route
-app.post('/api/listings', verifyCaptcha, upload.single('image'), createListing);
+app.post('/api/listings', verifyCaptcha, upload.single('image'), (req, res, next) => {
+    console.log('Handling listing creation...');
+    console.log('MongoDB Ready State:', mongoose.connection.readyState);
+    createListing(req, res);
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

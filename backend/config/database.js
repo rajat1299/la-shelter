@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const logger = require('../utils/logger');
 
 const connectDB = async () => {
+    console.log('Attempting to connect to MongoDB...');
+    console.log('MongoDB URI:', process.env.MONGO_URI.replace(/:[^:]*@/, ':****@')); // Hide password
     try {
         const conn = await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
@@ -12,10 +14,15 @@ const connectDB = async () => {
             socketTimeoutMS: 45000,
         });
 
+        console.log('MongoDB Connection Object:', {
+            host: conn.connection.host,
+            name: conn.connection.name,
+            readyState: conn.connection.readyState
+        });
         logger.info(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
+        console.error('Detailed MongoDB connection error:', error);
         logger.error('MongoDB connection error:', error);
-        // Don't exit the process, let it retry
         return false;
     }
     return true;

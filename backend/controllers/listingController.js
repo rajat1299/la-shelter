@@ -1,6 +1,7 @@
 const Listing = require('../models/Listing');
 const logger = require('../utils/logger');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 
 // Function to generate a random password
 const generatePassword = () => {
@@ -27,6 +28,8 @@ exports.getListings = async (req, res) => {
 
 exports.createListing = async (req, res) => {
     try {
+        console.log('Starting createListing...');
+        console.log('MongoDB Connection State:', mongoose.connection.readyState);
         // Debug logging
         console.log('Request body:', req.body);
         console.log('Request file:', req.file);
