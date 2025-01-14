@@ -27,11 +27,15 @@ exports.getListings = async (req, res) => {
 
 exports.createListing = async (req, res) => {
     try {
+        logger.info('Creating new listing, body:', req.body);
+        logger.info('File:', req.file);
+
         const { description, contactMethods } = req.body;
         const imageUrl = req.file ? req.file.filename : null;
 
         // Validate required fields
         if (!description || !imageUrl) {
+            logger.error('Missing required fields:', { description: !!description, imageUrl: !!imageUrl });
             return res.status(400).json({ 
                 error: 'Description and image are required' 
             });
