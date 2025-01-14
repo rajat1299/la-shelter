@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA Fires Emergency Housing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">LA Shelter</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="how-it-works.html">How It Works</a>
+                <a href="create-listing.html">Create Listing</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Available Shelter for Displaced LA Residents</h1>
+            <div class="risk-banner">⚠️ Use at your own risk</div>
+        </div>
+
+        <div class="quick-actions">
+            <div class="action-card">
+                <div class="action-content">
+                    <p class="action-text">Have space available?</p>
+                    <a href="create-listing.html" class="btn-bracket">create listing</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="listings-section">
+            <div class="listings-header">
+                <h2>Current Listings</h2>
+                <div class="listings-count">Showing all available spaces</div>
+            </div>
+            <div id="listings-container">
+                <!-- Listings will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <div class="risk-notice">
+                This is a community platform. Please exercise caution and verify all information independently.
+            </div>
+        </footer>
+    </div>
+
+    <div id="listing-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="" alt="Listing Image">
+                </div>
+                <div class="modal-details">
+                    <p class="modal-description"></p>
+                    <div class="modal-contact-methods"></div>
+                    <div class="modal-date"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+            <h3>Delete Listing</h3>
+            <p>Please enter the password to delete this listing:</p>
+            <input type="password" id="delete-password" class="form-input">
+            <div class="modal-actions">
+                <button class="btn-bracket" onclick="confirmDelete()">confirm delete</button>
+                <button class="btn-bracket" onclick="closeDeleteModal()">cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/app.js"></script>
+</body>
+</html> 
