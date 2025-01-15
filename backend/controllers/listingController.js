@@ -2,6 +2,8 @@ const Listing = require('../models/Listing');
 const logger = require('../utils/logger');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
+const cloudinary = require('../config/cloudinary');
+const fs = require('fs');
 
 // Function to generate a random password
 const generatePassword = () => {
@@ -36,7 +38,19 @@ exports.createListing = async (req, res) => {
         console.log('Contact Methods:', typeof req.body.contactMethods);
 
         const { description, contactMethods } = req.body;
-        const imageUrl = req.file ? req.file.filename : null;
+        let imageUrl = null;
+
+        // Upload to Cloudinary if file exists
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'lashelter',
+                resource_type: 'auto'
+            });
+            imageUrl = result.secure_url;
+            
+            // Clean up local file
+            fs.unlinkSync(req.file.path);
+        }
 
         // Validate required fields
         if (!description || !imageUrl) {
@@ -64,7 +78,7 @@ exports.createListing = async (req, res) => {
         const listing = new Listing({
             description,
             contactMethods: parsedContactMethods,
-            imageUrl: req.file.filename,
+            imageUrl: imageUrl,
             password
         });
 
